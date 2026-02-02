@@ -56,6 +56,8 @@ export default function Dashboard() {
   const [description, setDescription] = useState('');
   const [generating, setGenerating] = useState(false);
   const [generated, setGenerated] = useState(false);
+  const [generatedFiles, setGeneratedFiles] = useState<{ path: string; type: string }[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSelectTemplate = (id: string) => {
     setSelectedTemplate(id);
@@ -64,11 +66,31 @@ export default function Dashboard() {
 
   const handleGenerate = async () => {
     setGenerating(true);
+    setError(null);
     setStep('generate');
-    // Simulate generation
-    await new Promise((r) => setTimeout(r, 3000));
+    try {
+      const res = await fetch('/api/scaffold', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: projectName,
+          description,
+          template: selectedTemplate,
+          features: [],
+          chain: 'ethereum',
+        }),
+      });
+      const data = await res.json();
+      if (data.status === 'success') {
+        setGeneratedFiles(data.project.files || []);
+        setGenerated(true);
+      } else {
+        setError(data.error || 'Generation failed');
+      }
+    } catch {
+      setError('Failed to connect to scaffold API');
+    }
     setGenerating(false);
-    setGenerated(true);
   };
 
   return (
@@ -210,23 +232,24 @@ export default function Dashboard() {
                 <div className="text-6xl">🎉</div>
                 <h1 className="text-3xl font-bold">Project Ready!</h1>
                 <p className="text-slate-400">
-                  {projectName} has been scaffolded with all the bells and whistles.
+                  {projectName} has been scaffolded with {generatedFiles.length} files.
                 </p>
                 <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 text-left mt-8">
-                  <h3 className="font-semibold mb-3">📁 Generated Files</h3>
-                  <pre className="text-sm text-slate-400 font-mono">
-{`${projectName}/
-├── src/
-│   ├── app/
-│   ├── components/
-│   └── lib/
-├── contracts/
-│   ├── Token.sol
-│   └── deploy.ts
-├── package.json
-├── tsconfig.json
-└── README.md`}
-                  </pre>
+                  <h3 className="font-semibold mb-3">📁 Generated Files ({generatedFiles.length})</h3>
+                  <div className="space-y-1 max-h-64 overflow-auto">
+                    {generatedFiles.map((f, i) => (
+                      <div key={i} className="text-sm font-mono flex items-center gap-2">
+                        <span className={`text-xs px-1.5 py-0.5 rounded ${
+                          f.type === 'solidity' ? 'bg-purple-500/20 text-purple-300' :
+                          f.type === 'typescript' ? 'bg-blue-500/20 text-blue-300' :
+                          'bg-slate-600/50 text-slate-400'
+                        }`}>
+                          {f.type === 'solidity' ? 'SOL' : f.type === 'typescript' ? 'TS' : 'CFG'}
+                        </span>
+                        <span className="text-slate-300">{f.path}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
                 <div className="flex gap-3 justify-center mt-6">
                   <button className="bg-blue-500 hover:bg-blue-600 px-6 py-3 rounded-lg font-medium transition">
@@ -239,6 +262,18 @@ export default function Dashboard() {
                     Start New Project
                   </button>
                 </div>
+              </div>
+            ) : error ? (
+              <div className="space-y-6 py-12">
+                <div className="text-6xl">❌</div>
+                <h1 className="text-3xl font-bold">Generation Failed</h1>
+                <p className="text-red-400">{error}</p>
+                <button
+                  onClick={() => { setStep('configure'); setError(null); }}
+                  className="bg-slate-700 hover:bg-slate-600 px-6 py-3 rounded-lg font-medium transition"
+                >
+                  ← Try Again
+                </button>
               </div>
             ) : null}
           </div>
