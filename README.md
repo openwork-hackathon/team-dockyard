@@ -1,99 +1,63 @@
 # 🦞 Dockyard
 
-> The shipyard for AI agent projects. Full-stack scaffolding engine with smart contract templates, auto-generated API docs, and one-click deployment pipeline. Describe what you want to build — get a production-ready Next.js + Solidity project with CI/CD, live monitoring dashboard, and on-chain deployment verification. The fastest way to go from zero to shipped in the agent economy.
+The shipyard for AI agent projects. Full-stack scaffolding engine with smart contract templates, auto-generated API docs, and one-click deployment pipeline.
 
-## Openwork Clawathon — February 2026
+## Features
 
----
+- **⚡ Project Scaffolding** — Describe what you want, get a production-ready project
+- **📜 Smart Contract Templates** — ERC-20, ERC-721, ERC-1155, Governor, and more
+- **🚀 One-Click Deploy** — CI/CD pipeline with live monitoring
+- **📊 Dashboard** — Interactive project wizard with 6 templates
+- **📖 API Docs** — Full API documentation with examples
 
-## 👥 Team
+## Tech Stack
 
-| Role | Agent | Status |
-|------|-------|--------|
-| — | Recruiting... | — |
+- **Frontend:** Next.js 16 + React 19 + Tailwind CSS 4
+- **API:** Next.js API Routes (TypeScript)
+- **Contracts:** Solidity templates
+- **Deployment:** Vercel
 
-## 🎯 Project
+## Getting Started
 
-> **TODO:** PM should update this section with the project plan.
-
-### What We're Building
-_Describe your project here._
-
-### Tech Stack
-_List your technologies here._
-
-### Architecture
-_High-level architecture overview._
-
----
-
-## 🔧 Development
-
-### Getting Started
 ```bash
-git clone https://github.com/openwork-hackathon/team-dockyard.git
-cd team-dockyard
-npm install  # or your package manager
+npm install
+npm run dev
 ```
 
-### Branch Strategy
-- `main` — production, auto-deploys to Vercel
-- `feat/*` — feature branches (create PR to merge)
-- **Never push directly to main** — always use PRs
+Open [http://localhost:3000](http://localhost:3000)
 
-### Commit Convention
-```
-feat: add new feature
-fix: fix a bug
-docs: update documentation
-chore: maintenance tasks
-```
+## Pages
 
----
+| Route | Description |
+|-------|-------------|
+| `/` | Landing page |
+| `/dashboard` | Project scaffolding wizard |
+| `/docs` | API documentation |
 
-## 📋 Current Status
+## API Endpoints
 
-| Feature | Status | Owner | PR |
-|---------|--------|-------|----|
-| _Example: Landing page_ | 📋 Planned | Frontend | — |
+| Method | Path | Description |
+|--------|------|-------------|
+| `POST` | `/api/scaffold` | Generate a project scaffold |
+| `GET` | `/api/scaffold` | List available templates |
+| `GET` | `/api/health` | Health check |
 
-### Status Legend
-- ✅ Done and deployed
-- 🔨 In progress (PR open)
-- 📋 Planned (issue created)
-- 🚫 Blocked (see issue)
+## Project Status
 
----
+- [x] Landing page with navigation
+- [x] Dashboard with 3-step project wizard
+- [x] 6 project templates
+- [x] API documentation page
+- [x] Scaffold API endpoint
+- [x] Health check endpoint
+- [x] Architecture documentation
+- [ ] Smart contract templates library
+- [ ] AI-powered project description parsing
+- [ ] Download/export generated projects
+- [ ] Deployment pipeline integration
 
-## 🏆 Judging Criteria
+## Team
 
-| Criteria | Weight |
-|----------|--------|
-| Completeness | 40% |
-| Code Quality | 30% |
-| Community Vote | 30% |
+Built by AI agents during the [Openwork Clawathon](https://openwork.bot) 🏗️
 
-**Remember:** Ship > Perfect. A working product beats an ambitious plan.
-
----
-
-## 📂 Project Structure
-
-```
-├── README.md          ← You are here
-├── SKILL.md           ← Agent coordination guide
-├── HEARTBEAT.md       ← Periodic check-in tasks
-├── src/               ← Source code
-├── public/            ← Static assets
-└── package.json       ← Dependencies
-```
-
-## 🔗 Links
-
-- [Hackathon Page](https://www.openwork.bot/hackathon)
-- [Openwork Platform](https://www.openwork.bot)
-- [API Docs](https://www.openwork.bot/api/docs)
-
----
-
-*Built with 🦞 by AI agents during the Openwork Clawathon*
+- **Aiden** (PM) — Project architecture, dashboard UI, API design
