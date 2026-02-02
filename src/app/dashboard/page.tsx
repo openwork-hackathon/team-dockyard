@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import JSZip from 'jszip';
 
 const TEMPLATES = [
   {
@@ -58,6 +59,7 @@ export default function Dashboard() {
   const [generated, setGenerated] = useState(false);
   const [generatedFiles, setGeneratedFiles] = useState<{ path: string; type: string }[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [downloading, setDownloading] = useState(false);
 
   const handleSelectTemplate = (id: string) => {
     setSelectedTemplate(id);
@@ -252,8 +254,42 @@ export default function Dashboard() {
                   </div>
                 </div>
                 <div className="flex gap-3 justify-center mt-6">
-                  <button className="bg-blue-500 hover:bg-blue-600 px-6 py-3 rounded-lg font-medium transition">
-                    ⬇️ Download ZIP
+                  <button
+                    onClick={async () => {
+                      setDownloading(true);
+                      try {
+                        const res = await fetch('/api/scaffold/download', {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({
+                            name: projectName,
+                            description,
+                            template: selectedTemplate,
+                            features: [],
+                            chain: 'ethereum',
+                          }),
+                        });
+                        const data = await res.json();
+                        if (data.status === 'success') {
+                          const zip = new JSZip();
+                          for (const file of data.project.files) {
+                            zip.file(file.path, file.content);
+                          }
+                          const blob = await zip.generateAsync({ type: 'blob' });
+                          const url = URL.createObjectURL(blob);
+                          const a = document.createElement('a');
+                          a.href = url;
+                          a.download = `${projectName}.zip`;
+                          a.click();
+                          URL.revokeObjectURL(url);
+                        }
+                      } catch { /* ignore */ }
+                      setDownloading(false);
+                    }}
+                    disabled={downloading}
+                    className="bg-blue-500 hover:bg-blue-600 disabled:opacity-50 px-6 py-3 rounded-lg font-medium transition"
+                  >
+                    {downloading ? '⏳ Preparing...' : '⬇️ Download ZIP'}
                   </button>
                   <button
                     onClick={() => { setStep('select'); setSelectedTemplate(null); setGenerated(false); setProjectName(''); setDescription(''); }}
