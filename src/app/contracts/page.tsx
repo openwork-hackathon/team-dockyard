@@ -197,12 +197,29 @@ export default function ContractsPage() {
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-xl font-bold">📜 Contract Preview</h2>
                   {code && (
-                    <button
-                      onClick={copyCode}
-                      className="text-sm bg-slate-700 hover:bg-slate-600 px-3 py-1 rounded-lg transition"
-                    >
-                      {copied ? '✅ Copied!' : '📋 Copy'}
-                    </button>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => {
+                          const contractName = selected === 'erc20' ? tokenName : selected === 'erc721' ? nftName : govName;
+                          const blob = new Blob([code], { type: 'text/plain' });
+                          const url = URL.createObjectURL(blob);
+                          const a = document.createElement('a');
+                          a.href = url;
+                          a.download = `${contractName}.sol`;
+                          a.click();
+                          URL.revokeObjectURL(url);
+                        }}
+                        className="text-sm bg-blue-600 hover:bg-blue-500 px-3 py-1 rounded-lg transition"
+                      >
+                        ⬇️ .sol
+                      </button>
+                      <button
+                        onClick={copyCode}
+                        className="text-sm bg-slate-700 hover:bg-slate-600 px-3 py-1 rounded-lg transition"
+                      >
+                        {copied ? '✅ Copied!' : '📋 Copy'}
+                      </button>
+                    </div>
                   )}
                 </div>
                 {code ? (
