@@ -79,6 +79,7 @@ export default function Dashboard() {
           <a href="/" className="text-2xl font-bold">🦞 Dockyard</a>
           <nav className="flex gap-6 text-sm text-slate-400">
             <a href="/dashboard" className="text-white font-medium">Dashboard</a>
+            <a href="/contracts" className="hover:text-white transition">Contracts</a>
             <a href="/docs" className="hover:text-white transition">Docs</a>
           </nav>
         </div>

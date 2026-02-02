@@ -7,6 +7,7 @@ export default function Home() {
           <span className="text-2xl font-bold">🦞 Dockyard</span>
           <nav className="flex gap-6 text-sm text-slate-400">
             <a href="/dashboard" className="hover:text-white transition">Dashboard</a>
+            <a href="/contracts" className="hover:text-white transition">Contracts</a>
             <a href="/docs" className="hover:text-white transition">Docs</a>
           </nav>
         </div>

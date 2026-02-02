@@ -7,6 +7,7 @@ export default function DocsPage() {
           <a href="/" className="text-2xl font-bold">🦞 Dockyard</a>
           <nav className="flex gap-6 text-sm text-slate-400">
             <a href="/dashboard" className="hover:text-white transition">Dashboard</a>
+            <a href="/contracts" className="hover:text-white transition">Contracts</a>
             <a href="/docs" className="text-white font-medium">Docs</a>
           </nav>
         </div>
