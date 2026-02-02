@@ -22,17 +22,17 @@ export async function POST(request: NextRequest) {
 
     const files = generateProject(config);
 
+    // Return files as JSON for client-side zip generation
+    // In production, you'd use a library like archiver/jszip server-side
     return NextResponse.json({
       status: 'success',
       project: {
         name: config.name,
-        template: config.template,
-        description: config.description,
-        chain: config.chain,
-        files: files.map((f) => ({ path: f.path, type: f.type, size: f.content.length })),
-        fileCount: files.length,
-        totalSize: files.reduce((sum, f) => sum + f.content.length, 0),
-        generatedAt: new Date().toISOString(),
+        files: files.map((f) => ({
+          path: f.path,
+          content: f.content,
+          type: f.type,
+        })),
       },
     });
   } catch {
@@ -41,19 +41,4 @@ export async function POST(request: NextRequest) {
       { status: 400 }
     );
   }
-}
-
-export async function GET() {
-  return NextResponse.json({
-    templates: [
-      'nft-marketplace',
-      'defi-dashboard',
-      'dao-governance',
-      'token-launch',
-      'web3-social',
-      'custom',
-    ],
-    version: '0.1.0',
-    usage: 'POST /api/scaffold with { name, template, description?, features?, chain? }',
-  });
 }
